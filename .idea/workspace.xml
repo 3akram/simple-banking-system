@@ -147,7 +147,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1604560453162</updated>
-      <workItem from="1604560454200" duration="1325000" />
+      <workItem from="1604560454200" duration="1593000" />
     </task>
     <servers />
   </component>
@@ -155,6 +155,10 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="698" y="142" width="504" height="837" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1604561961331">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="698" y="142" width="504" height="837" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1604561961331" />
     <state width="1872" height="275" key="GridCell.Tab.0.bottom" timestamp="1604560567159">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
