@@ -1,7 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Create New Account</h1>
+    <div class="d-flex justify-content-between">
+        <h3>Create New Account</h3>
+        <a class="btn btn-outline-info" href="/accounts" > Back</a>
+    </div>
 
     {!! Form::open(['action' => 'App\Http\Controllers\AccountsController@store', 'method' => 'POST']) !!}
     <label>
@@ -31,7 +34,9 @@
         </select>
     </label>
     <hr>
-    {!! Form::submit('Submit') !!}
+    <div class="d-flex justify-content-lg-end">
+        {!! Form::submit('Submit', ['class' => 'btn btn-success']) !!}
+    </div>
     {!! Form::close() !!}
 
 @endsection

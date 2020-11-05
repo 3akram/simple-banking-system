@@ -14,6 +14,22 @@ class Account extends Model
      * return Bank
      */
 
+    public function setUserId($userId) {
+        $this->user_id = $userId;
+    }
+
+    public function setBankId($bankId){
+        $this->bank_id = $bankId;
+    }
+
+    public function setAccountTypeId($accountTypeId) {
+        $this->account_type_id = $accountTypeId;
+    }
+
+    public function setCurrencyTypeId ($currencyTypeId) {
+        $this->currency_id = $currencyTypeId;
+    }
+
     public function bank() {
         return $this->belongsTo('App\Models\Bank');
     }
