@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddActiveFlagToAccounts extends Migration
+class AddCurrencyIdToAccounts extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddActiveFlagToAccounts extends Migration
     public function up()
     {
         Schema::table('accounts', function (Blueprint $table) {
-            $table->tinyInteger('active')->default(1);
+            $table->integer('currency_id');
         });
     }
 
@@ -26,7 +26,7 @@ class AddActiveFlagToAccounts extends Migration
     public function down()
     {
         Schema::table('accounts', function (Blueprint $table) {
-            $table->dropColumn('active');
+            $table->dropColumn('currency_id');
         });
     }
 }

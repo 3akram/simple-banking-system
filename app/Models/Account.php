@@ -34,4 +34,14 @@ class Account extends Model
     public function user(){
         return $this->belongsTo('App\Models\User');
     }
+
+    /*
+     * desc: Account to AccountType relation
+     * One     to One
+     * return AccountType
+     */
+    
+    public function currency() {
+        return $this->belongsTo('App\Models\Currency');
+    }
 }

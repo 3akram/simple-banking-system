@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class AddBankNameToBanks extends Migration
 {
@@ -16,6 +17,12 @@ class AddBankNameToBanks extends Migration
         Schema::table('banks', function (Blueprint $table) {
             $table->string('bank_name');
         });
+
+        DB::table('banks')->insert([
+            ['bank_name' => 'CIB'],
+            ['bank_name' => 'QNB'],
+            ['bank_name' => 'HSBC']
+        ]);
     }
 
     /**
