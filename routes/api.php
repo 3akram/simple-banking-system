@@ -18,4 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/', [ApiController::class, 'getAccountBalance']);
+Route::post('/getAccountBalance', [ApiController::class, 'getAccountBalance']);
+Route::post('/withdrawMoney'    , [ApiController::class, 'withDrawMoney']);
+Route::post('/depositMoney'     , [ApiController::class, 'depositMoney']);
+Route::post('/transferMoney'    , [ApiController::class, 'transferMoney']);

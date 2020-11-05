@@ -28,7 +28,16 @@ class ApiController extends Controller
     public function withdrawMoney(Request $request) {
         $accountId = $request->input('id');
         $amount    = $request->input('amount');
-        // withdraw money
+
+        $account   = Account::find($accountId);
+        // Check if the withdraw can be fulfilled
+        if($account->balance - floatval($amount) >= 0) {
+            $account->balance = $account->balance - floatval($amount);
+            $account->save();
+            return ['success' => true, 'message' => 'Operation success'];
+        } else {
+            return ['success' => true, 'message' => "Not enough balance"];
+        }
     }
 
     /*
@@ -40,7 +49,12 @@ class ApiController extends Controller
     public function depositMoney(Request $request) {
         $accountId = $request->input('id');
         $amount    = $request->input('amount');
-        // Deposit money
+
+        $account   = Account::find($accountId);
+        $account->balance = $account->balance + floatval($amount);
+
+        $account->save();
+        return ['success'=>true];
     }
 
     /*
