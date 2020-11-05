@@ -119,6 +119,7 @@
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-grapheme" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-normalizer" />
       <path value="$PROJECT_DIR$/vendor/laravel/ui" />
+      <path value="$PROJECT_DIR$/vendor/laravelcollective/html" />
     </include_path>
   </component>
   <component name="ProjectId" id="1jrRvEqyP1uSGhs6AsF3fue2wcE" />
@@ -132,6 +133,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/views" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
@@ -147,7 +153,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1604560453162</updated>
-      <workItem from="1604560454200" duration="9249000" />
+      <workItem from="1604560454200" duration="16596000" />
     </task>
     <servers />
   </component>
@@ -155,10 +161,10 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="698" y="142" width="504" height="837" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1604561961331">
+    <state x="698" y="142" width="504" height="837" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1604571039231">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="698" y="142" width="504" height="837" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1604561961331" />
+    <state x="698" y="142" width="504" height="837" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1604571039231" />
     <state width="1872" height="275" key="GridCell.Tab.0.bottom" timestamp="1604560567159">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -175,5 +181,13 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1872" height="275" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1604560567159" />
+    <state x="569" y="166" width="772" height="782" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1604575777717">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="569" y="166" width="772" height="782" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.27.1920.1053@0.27.1920.1053" timestamp="1604575777717" />
+    <state x="651" y="162" width="618" height="783" key="find.popup" timestamp="1604571642773">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="651" y="162" width="618" height="783" key="find.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1604571642773" />
   </component>
 </project>

@@ -13,6 +13,7 @@ class Account extends Model
      * One     to Many
      * return Bank
      */
+
     public function bank() {
         return $this->belongsTo('App\Models\Bank');
     }
@@ -40,7 +41,7 @@ class Account extends Model
      * One     to One
      * return AccountType
      */
-    
+
     public function currency() {
         return $this->belongsTo('App\Models\Currency');
     }
