@@ -25,10 +25,6 @@
             <thead>
             <tr>
                 <th scope="col">id</th>
-                <th scope="col">Account Id</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Type</th>
-                <th scope="col">Description</th>
                 <th scope="col">Created At</th>
                 <th scope="col"></th>
             </tr>
@@ -37,16 +33,12 @@
             @foreach($transactions as $transaction)
                 <tr>
                     <th scope="row">{{$transaction->id}}</th>
-                    <td>{{$transaction->account->id}}</td>
-                    <td>{{$transaction->amount}}</td>
-                    <td>{{$transaction->type}}</td>
-                    <td>{{$transaction->description}}</td>
                     <td>{{$transaction->created_at}}</td>
                     <td>
-                        {!!Form::open(['action' => ['App\Http\Controllers\AccountsController@flipStatus', $account->id], 'method' => 'POST'])!!}
+                        {!!Form::open(['action' => ['App\Http\Controllers\TransactionsController@destroy', $transaction->id], 'method' => 'POST'])!!}
                         {!! Form::hidden('_method', 'PUT') !!}
                         @if(1)
-                            {!! Form::submit('Deactivate', ['class' => 'btn btn-outline-danger']) !!}
+                            {!! Form::submit('Delete', ['class' => 'btn btn-outline-danger']) !!}
                         @endif
                         {!!Form::close()!!}
                     </td>

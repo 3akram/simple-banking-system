@@ -2,13 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\TransactionType;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Models\TransactionOperation;
+use Illuminate\Support\Facades\DB;
 
 class TransactionsController extends Controller
 {
+    const WITHDRAW = 'withdraw';
+    const DEPOSIT  = 'deposit';
+    const TRANSFER = 'transfer';
     /**
      * Create a new controller instance.
      *
@@ -47,12 +54,63 @@ class TransactionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Routing\Redirector
+     * @throws Exception
      */
     public function store(Request $request)
     {
-        return $request->input('transactionOperation');
+        $transactionOperations = $request->input('transactionOperation');
+        // create new transaction
+
+        DB::beginTransaction();
+        try{
+            $transaction = new Transaction();
+            $transaction->user_id = auth()->user()->id;
+
+            // save transaction
+            $transaction->save();
+            // start timer run update to the transaction after 24 hours flip permanent flag (important)
+
+            foreach($transactionOperations as $operation) {
+                $accountId                                 = $operation['accountId'];
+                $accountTypeId                             = $operation['transactionTypeId'];
+
+                // create new transaction operation
+                $transactionOperation                      = new TransactionOperation();
+                $transactionOperation->account_id          = $accountId;
+                $transactionOperation->transaction_type_id = $accountTypeId;
+                $transactionOperation->amount              = floatval($operation['amount']);
+                $transactionOperation->transaction_id      = $transaction->id;
+
+                // save transaction operation
+                $transactionOperation->save();
+
+                // update balance
+                $account = Account::find($accountId);
+
+                // withdraw case
+                if($transactionOperation->transactionType->transaction_type == self::WITHDRAW){
+                    // check if the balance >= amount if so take amount from balance
+                    if($account->balance >= $transactionOperation->amount){
+                        $account->balance = $account->balance - $transactionOperation->amount;
+                    } else {
+                        throw new Exception('Operation Field!');
+                    }
+
+                } else if ($transactionOperation->transactionType->transaction_type == self::DEPOSIT) {
+                    // Add amount to the balance
+                    $account->balance = $account->balance + $transactionOperation->amount;
+                }
+                $account->save();
+            }
+            // if the code run with no errors
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollback();
+            throw $exception;
+        }
+        return redirect('/transactions');
     }
 
     /**

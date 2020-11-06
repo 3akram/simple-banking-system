@@ -57,8 +57,18 @@ class Account extends Model
      * One     to One
      * return AccountType
      */
-
     public function currency() {
         return $this->belongsTo('App\Models\Currency');
     }
+
+    /*
+     * desc: Account to Transaction relation
+     * One     to Many
+     * return AccountType
+     */
+    public function transactions() {
+        return $this->hasMany('App\Models\Transaction');
+    }
+
+
 }

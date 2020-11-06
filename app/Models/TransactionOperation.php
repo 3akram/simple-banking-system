@@ -15,4 +15,7 @@ class TransactionOperation extends Model
     public function transactionType(){
         return $this->belongsTo('App\Models\TransactionType');
     }
+    public function account(){
+        return $this->belongsTo('App\Models\Account');
+    }
 }

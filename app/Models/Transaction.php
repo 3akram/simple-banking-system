@@ -15,9 +15,8 @@ class Transaction extends Model
         return $this->hasMany('App\Models\TransactionOperation');
     }
 
-    // Create Transaction
-    public function create(TransactionOperations $transactionOperations) {
-        //... TODO:// is to fire transaction operations and save each one of them
-        //... TODO:// Start a timer to flip permanent flag to 1 after 24 hrs
+    public function user(){
+        return $this->belongsTo('App\Models\User');
     }
+
 }
