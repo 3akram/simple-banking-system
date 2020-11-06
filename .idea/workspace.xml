@@ -20,17 +20,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43e5b22e-1093-4e50-83e1-dec377b18150" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/_lighthouse_ide_helper.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/GraphQL/Queries/AccountQueries.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/programmatic-types.graphql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schema-directives.graphql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/GraphQL/Queries/AccountMutator.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/AuthController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/jwt.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/SimpleBankingSystem.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SimpleBankingSystem.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/GraphQL/Queries/AccountQueries.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/GraphQL/Queries/AccountQueries.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ApiController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/Account.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Account.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/auth.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graphql/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/graphql/schema.graphql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,6 +162,9 @@
       <path value="$PROJECT_DIR$/vendor/webonyx/graphql-php" />
       <path value="$PROJECT_DIR$/vendor/mll-lab/laravel-graphql-playground" />
       <path value="$PROJECT_DIR$/vendor/haydenpierce/class-finder" />
+      <path value="$PROJECT_DIR$/vendor/namshi/jose" />
+      <path value="$PROJECT_DIR$/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/vendor/tymon/jwt-auth" />
     </include_path>
   </component>
   <component name="ProjectId" id="1jrRvEqyP1uSGhs6AsF3fue2wcE" />
@@ -198,7 +206,7 @@
       <updated>1604560453162</updated>
       <workItem from="1604560454200" duration="61294000" />
       <workItem from="1604666387793" duration="44000" />
-      <workItem from="1604666451549" duration="8536000" />
+      <workItem from="1604666451549" duration="16750000" />
     </task>
     <servers />
   </component>
@@ -256,14 +264,18 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1872" height="275" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1604666360847" />
+    <state x="605" y="272" width="699" height="570" key="NewPhpClassDialog" timestamp="1604704129611">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="605" y="272" width="699" height="570" key="NewPhpClassDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1604704129611" />
     <state x="754" y="478" width="401" height="158" key="NewPhpFileDialog" timestamp="1604671181013">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="754" y="478" width="401" height="158" key="NewPhpFileDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1604671181013" />
-    <state x="448" y="188" width="1024" height="737" key="SettingsEditor" timestamp="1604668824380">
+    <state x="448" y="188" width="1024" height="737" key="SettingsEditor" timestamp="1604704578096">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="448" y="188" width="1024" height="737" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1604668824380" />
+    <state x="448" y="188" width="1024" height="737" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1604704578096" />
     <state x="569" y="166" width="772" height="782" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1604575777717">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>

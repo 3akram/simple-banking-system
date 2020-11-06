@@ -15,4 +15,5 @@ class AccountQueries
     {
         return Account::find($args['id']);
     }
+
 }

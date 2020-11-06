@@ -15,7 +15,7 @@ class ApiController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware( 'auth:api');
     }
 
     /*
@@ -39,15 +39,24 @@ class ApiController extends Controller
         $accountId = $request->input('id');
         $amount    = $request->input('amount');
 
+        if(!isset($accountId) || !isset($amount)) {
+            return ['success' => false, 'message' => 'Account Id and Amount must specified'];
+        }
+
         $account   = Account::find($accountId);
-        // Check if the withdraw can be fulfilled
-        if($account->balance - floatval($amount) >= 0) {
-            $account->balance = $account->balance - floatval($amount);
+
+        if(!isset($account)){
+            return ['success' => false, 'message' => 'Account does not exists'];
+        }
+
+        try{
+            $account->withdraw(floatval($amount));
             $account->save();
             return ['success' => true, 'message' => 'Operation success'];
-        } else {
-            return ['success' => true, 'message' => "Not enough balance"];
+        } catch(\Exception $exception) {
+            return ['success' => true, 'message' => $exception->getMessage()];
         }
+
     }
 
     /*
@@ -60,9 +69,12 @@ class ApiController extends Controller
         $accountId = $request->input('id');
         $amount    = $request->input('amount');
 
-        $account   = Account::find($accountId);
-        $account->balance = $account->balance + floatval($amount);
+        if(!isset($accountId) || !isset($amount)) {
+            return ['success'=> false, 'message' => 'Account Id and Amount must specified'];
+        }
 
+        $account   = Account::find($accountId);
+        $account->deposit(floatval($amount));
         $account->save();
         return ['success'=>true];
     }

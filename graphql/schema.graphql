@@ -48,7 +48,7 @@ type Bank {
 }
 
 type Mutation {
-    createUser(name: String!, email: String!, password: String!): User
-    updateUser(id: ID, email: String, password: String): User
-    deleteUser(id: ID): User
+    withdrawMoney(id: ID, amount: Float): Account @field(resolver: "\\App\\GraphQL\\Queries\\AccountMutator@withdrawMoney")
+    depositMoney(id: ID, amount: Float): Account @field(resolver: "\\App\\GraphQL\\Queries\\AccountMutator@depositMoney")
+    getAccountBalance(id: ID): Float @field(resolver: "\\App\\GraphQL\\Queries\\AccountMutator@getAccountBalance")
 }

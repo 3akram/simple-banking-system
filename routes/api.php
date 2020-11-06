@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,7 +19,27 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/getAccountBalance', [ApiController::class, 'getAccountBalance']);
-Route::post('/withdrawMoney'    , [ApiController::class, 'withDrawMoney']);
-Route::post('/depositMoney'     , [ApiController::class, 'depositMoney']);
-Route::post('/transferMoney'    , [ApiController::class, 'transferMoney']);
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('login', 'App\Http\Controllers\AuthController@login');
+    Route::post('register', 'App\Http\Controllers\AuthController@register');
+    Route::post('logout', 'App\Http\Controllers\AuthController@logout');
+    Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
+    Route::get('user-profile', 'App\Http\Controllers\AuthController@userProfile');
+});
+
+Route::group([
+    'middleware' => 'api'
+], function ($router) {
+    Route::post('/getAccountBalance', [ApiController::class, 'getAccountBalance']);
+    Route::post('/withdrawMoney'    , [ApiController::class, 'withDrawMoney']);
+    Route::post('/depositMoney', [ApiController::class, 'depositMoney']);
+    Route::post('/transferMoney'    , [ApiController::class, 'transferMoney']);
+});
+
+
+
+
+

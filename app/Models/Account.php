@@ -72,5 +72,30 @@ class Account extends Model
         return $this->hasMany('App\Models\Transaction');
     }
 
+    /**
+     * @param $amount
+     * @return $this
+     */
+    public function withdraw($amount)
+    {
+        // check if the balance >= amount if so take amount from balance
+        if ($this->balance >= $amount) {
+            $this->balance -= $amount;
+            return $this;
+        }
+        throw new HttpException(400, 'Your balance does have enough money');
+    }
+
+    /**
+     * @param $amount
+     * @return $this
+     */
+    public function deposit($amount)
+    {
+        $this->balance += $amount;
+        return $this;
+    }
+
+
 
 }
