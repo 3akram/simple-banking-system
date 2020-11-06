@@ -2,12 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TransactionType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
 
 class TransactionsController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,9 +37,11 @@ class TransactionsController extends Controller
      */
     public function create()
     {
-        $userId = auth()->user()->id;
-        $user   = User::find($userId);
-        return view('transactions.create')->with('accounts', $user->accounts);
+        $userId           = auth()->user()->id;
+        $user             = User::find($userId);
+        $transactionTypes = TransactionType::all();
+        $data             = array('accounts'=>$user->accounts, 'transactionTypes'=>$transactionTypes);
+        return view('transactions.create')->with($data);
     }
 
     /**
@@ -39,7 +52,7 @@ class TransactionsController extends Controller
      */
     public function store(Request $request)
     {
-        //...
+        return $request->input('transactionOperation');
     }
 
     /**

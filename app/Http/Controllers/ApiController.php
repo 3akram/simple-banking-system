@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\Response;
 
 class ApiController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /*
      * desc   : Get account balance
      * method : POST

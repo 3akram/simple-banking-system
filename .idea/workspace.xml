@@ -153,7 +153,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1604560453162</updated>
-      <workItem from="1604560454200" duration="44647000" />
+      <workItem from="1604560454200" duration="55996000" />
     </task>
     <servers />
   </component>
@@ -161,6 +161,10 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="588" y="234" width="734" height="646" key="#Inspections" timestamp="1604649465120">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="588" y="234" width="734" height="646" key="#Inspections/0.27.1920.1053@0.27.1920.1053" timestamp="1604649465120" />
     <state x="698" y="142" width="504" height="837" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1604571039231">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>

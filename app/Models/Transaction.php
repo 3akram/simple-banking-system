@@ -20,5 +20,4 @@ class Transaction extends Model
         //... TODO:// is to fire transaction operations and save each one of them
         //... TODO:// Start a timer to flip permanent flag to 1 after 24 hrs
     }
-
 }
