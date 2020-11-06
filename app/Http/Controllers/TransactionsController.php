@@ -2,28 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Transaction;
 
 class TransactionsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
-        //
+        $transactions = Transaction::all();
+        return view('transactions.transactions')->with('transactions', $transactions);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
-        //
+        $userId = auth()->user()->id;
+        $user   = User::find($userId);
+        return view('transactions.create')->with('accounts', $user->accounts);
     }
 
     /**
@@ -34,7 +39,7 @@ class TransactionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //...
     }
 
     /**
