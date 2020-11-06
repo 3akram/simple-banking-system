@@ -30,6 +30,13 @@ class AccountMutator
           return $account;
     }
 
+    /**
+     *
+     * @param $root
+     * @param $args
+     * @return Account
+     */
+
     public function depositMoney($root, $args)
     {
         $amount = $args['amount'];
@@ -51,6 +58,11 @@ class AccountMutator
 
     }
 
+    /**
+     * @param $root
+     * @param $args
+     * @return
+     */
     public function getAccountBalance($root, $args)
     {
         $accountId = $args['id'];
