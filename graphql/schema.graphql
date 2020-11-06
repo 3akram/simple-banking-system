@@ -8,6 +8,10 @@ scalar DateTime
 type Query {
     users: [User!]! @paginate(defaultCount: 10)
     user(id: ID @eq): User @find
+    transaction(id: ID @eq): Transaction @find
+    getTransactions: [Transaction!]! @all
+    getAccounts: [Account!]! @all
+    getAccount(id: ID! @eq): Account @find
 }
 
 type User {
@@ -16,6 +20,31 @@ type User {
     email: String!
     created_at: DateTime!
     updated_at: DateTime!
+}
+
+type Transaction {
+    id: ID!
+    permanent: Int!
+    user: User @belongsTo
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+type Account {
+    id: ID!
+    balance: Float!
+    bankName: Bank @belongsTo(relation: "bank")
+    currency: Currency @belongsTo
+}
+
+type Currency {
+    id: ID!
+    currency_type: String!
+}
+
+type Bank {
+    id: ID!
+    bank_name: String!
 }
 
 type Mutation {
