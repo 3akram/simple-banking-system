@@ -3,20 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
+use App\Common\CustomResponse;
 
 class ApiController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware( 'auth:api');
-    }
+    use CustomResponse;
+
+    //    public function __construct()
+    //    {
+    //        $this->middleware( 'auth:api');
+    //    }
 
     /*
      * desc   : Get account balance
@@ -26,7 +24,9 @@ class ApiController extends Controller
     public function getAccountBalance(Request $request){
         $accountId = $request->input('id');
         $account   = Account::find($accountId);
-        return $account->balance;
+        $userId    = auth('api')->user()->id;
+        $user      = User::find($userId);
+        return $this->successResponse($account->balance, 'account balance', $user, 200);
     }
 
     /*
@@ -38,25 +38,25 @@ class ApiController extends Controller
     public function withdrawMoney(Request $request) {
         $accountId = $request->input('id');
         $amount    = $request->input('amount');
-
+        $userId    = auth('api')->user()->id;
+        $user      = User::find($userId);
         if(!isset($accountId) || !isset($amount)) {
-            return ['success' => false, 'message' => 'Account Id and Amount must specified'];
+            return $this->errorResponse('Account Id and Amount must specified', $user, 400);
         }
 
         $account   = Account::find($accountId);
 
         if(!isset($account)){
-            return ['success' => false, 'message' => 'Account does not exists'];
+            return $this->errorResponse('Account does not exists', $user, 400);
         }
 
         try{
             $account->withdraw(floatval($amount));
             $account->save();
-            return ['success' => true, 'message' => 'Operation success'];
+            return $this->successResponse($account, 'Operation success', $user, 200);
         } catch(\Exception $exception) {
-            return ['success' => true, 'message' => $exception->getMessage()];
+            return $this->errorResponse($exception->getMessage(), $user, 400);
         }
-
     }
 
     /*
@@ -68,15 +68,17 @@ class ApiController extends Controller
     public function depositMoney(Request $request) {
         $accountId = $request->input('id');
         $amount    = $request->input('amount');
+        $userId    = auth()->user()->id;
+        $user      = User::find($userId);
 
         if(!isset($accountId) || !isset($amount)) {
-            return ['success'=> false, 'message' => 'Account Id and Amount must specified'];
+            return $this->errorResponse('Account Id and Amount must specified', $user, 400);
         }
 
         $account   = Account::find($accountId);
         $account->deposit(floatval($amount));
         $account->save();
-        return ['success'=>true];
+        return $this->successResponse($account, 'Operation success', $user, 200);
     }
 
     /*
@@ -89,6 +91,6 @@ class ApiController extends Controller
         $to_id   = $request->input('to_id');
         $from_id = $request->input('from_id');
         $amount  = $request->input('amount');
-        // transfer from_id --> to_id
+        // transfer from_id --> to_id[]
     }
 }
