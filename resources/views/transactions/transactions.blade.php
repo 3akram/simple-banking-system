@@ -5,20 +5,6 @@
         <h3>User Transactions</h3>
         <a class="btn btn-primary" href="/transactions/create" >Create New Transaction</a>
     </div>
-    <div>
-        <h4>Filter Transactions By Date</h4>
-{{--        {!! Form::open(['action' => 'App\Http\Controllers\AccountsController@applyFilter', 'method' => 'POST']) !!}--}}
-{{--        <label>--}}
-{{--            <select class="browser-default custom-select" name="bankId">--}}
-{{--                <option selected value="{{-1}}">All</option>--}}
-{{--                @foreach($banks as $bank)--}}
-{{--                    <option value="{{$bank->id}}" >{{$bank->bank_name}}</option>--}}
-{{--                @endforeach--}}
-{{--            </select>--}}
-{{--        </label>--}}
-{{--        {!! Form::submit('Filter', ['class' => 'btn btn-success']) !!}--}}
-{{--        {!! Form::close() !!}--}}
-    </div>
 
     @if(count($transactions) > 0)
         <table class="table table-striped">

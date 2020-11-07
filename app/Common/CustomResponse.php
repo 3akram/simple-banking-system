@@ -35,5 +35,4 @@ trait CustomResponse{
             'user' => $user
         ], $code);
     }
-
 }
