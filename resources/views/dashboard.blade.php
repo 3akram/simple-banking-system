@@ -13,8 +13,11 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    {{ __('You are logged in!') }}
+                    <div class="d-flex justify-content-around" >
+                        <a class="btn btn-outline-primary" href="/accounts" >Accounts</a>
+                        <a class="btn btn-outline-primary" href="/transactions" >Transactions</a>
+                        <a class="btn btn-outline-success" href="/transfer" >Transfer Money</a>
+                    </div>
                 </div>
             </div>
         </div>
