@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="d-flex justify-content-between">
-        <h3>Create New Transaction</h3>
+        <h3>Create New Transaction <a class="" href="/transfer"> Or Create Transfer</a> </h3>
         <a class="btn btn-outline-info" href="/transactions"> Back</a>
     </div>
 
@@ -64,7 +64,9 @@
                 </td>
             </tr>
         </table>
+    <div class="d-flex justify-content-between">
         <button type="submit" class="btn btn-success">Save</button>
+    </div>
     {!! Form::close() !!}
 
     <script type="text/javascript">

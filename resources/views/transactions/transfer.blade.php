@@ -3,6 +3,7 @@
 @section('content')
     <div class="d-flex justify-content-between m-4">
         <h3>Create Transfer</h3>
+        <a class="btn btn-outline-info" href="/transactions"> Back</a>
     </div>
     {!! Form::open(['action' => 'App\Http\Controllers\TransactionsController@createTransfer', 'method' => 'POST']) !!}
     <table class="table table-bordered" id="dynamicTable">
