@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Exception;
 class Account extends Model
 {
     use HasFactory;
@@ -75,6 +75,7 @@ class Account extends Model
     /**
      * @param $amount
      * @return $this
+     * @throws Exception
      */
     public function withdraw($amount)
     {
@@ -83,7 +84,7 @@ class Account extends Model
             $this->balance -= $amount;
             return $this;
         }
-        throw new HttpException(400, 'Your balance does have enough money');
+        throw new Exception('Your balance does have enough money');
     }
 
     /**

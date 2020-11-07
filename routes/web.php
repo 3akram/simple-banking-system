@@ -24,6 +24,9 @@ Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'inde
 
 Route::resource('accounts', 'App\Http\Controllers\AccountsController');
 Route::resource('transactions', 'App\Http\Controllers\TransactionsController');
+Route::get('/transfer', 'App\Http\Controllers\TransactionsController@transferMoney');
+Route::post('/transfer', 'App\Http\Controllers\TransactionsController@createTransfer');
+
 Route::PUT('/accounts/{id}/status', [App\Http\Controllers\AccountsController::class, 'flipStatus'])->name('accounts.status');
 Route::POST('/accounts/filter/by-bank', [App\Http\Controllers\AccountsController::class, 'applyFilter'])->name('accounts.applyFilter');
 

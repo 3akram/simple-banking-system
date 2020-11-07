@@ -16,7 +16,7 @@
                     <div class="d-flex justify-content-around" >
                         <a class="btn btn-outline-primary" href="/accounts" >Accounts</a>
                         <a class="btn btn-outline-primary" href="/transactions" >Transactions</a>
-                        <a class="btn btn-outline-success" href="/accounts" >Transfer Money</a>
+                        <a class="btn btn-outline-success" href="/transfer" >Transfer Money</a>
                     </div>
                 </div>
             </div>

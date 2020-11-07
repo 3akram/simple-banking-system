@@ -14,9 +14,9 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 
+
 class TransactionsController extends Controller
 {
-
     /**
      * Create a new controller instance.
      *
@@ -74,24 +74,18 @@ class TransactionsController extends Controller
 
             // start timer run update to the transaction after 24 hours flip permanent flag (important)
             foreach ($transactionOperations as $operation) {
-                $accountId     = $operation['accountId'];
-                $accountTypeId = $operation['transactionTypeId'];
+                $accountId         = $operation['accountId'];
+                $transactionTypeId = $operation['transactionTypeId'];
+                $account           = Account::find($accountId);
 
-                // create new transaction operation
-                $transactionOperation                       = new TransactionOperation();
-                $transactionOperation->account_id           = $accountId;
-                $transactionOperation->transaction_type_id  = $accountTypeId;
-                $transactionOperation->amount               = floatval($operation['amount']);
-                $transactionOperation->transaction_id       = $transaction->id;
-
-                // save transaction operation
+                $transactionOperation = $this->createTransactionOperation(
+                    $account,
+                    $transactionTypeId,
+                    floatval($operation['amount']),
+                    $transaction
+                );
                 $transactionOperation->save();
-
-                // update balance
-                $account = Account::find($accountId);
-
                 $this->handleTransactionOperation($transactionOperation, $account);
-
                 $account->save();
             }
             // if the code run with no errors
@@ -122,6 +116,25 @@ class TransactionsController extends Controller
     }
 
     /**
+     * @param $account
+     * @param $transactionTypeId
+     * @param $amount
+     * @param $transaction
+     * @return TransactionOperation
+     */
+    function createTransactionOperation($account, $transactionTypeId, $amount, $transaction)
+    {
+        // create new transaction operation
+        $transactionOperation                       = new TransactionOperation();
+        $transactionOperation->account_id           = $account->id;
+        $transactionOperation->transaction_type_id  = $transactionTypeId;
+        $transactionOperation->amount               = $amount;
+        $transactionOperation->transaction_id       = $transaction->id;
+
+        return $transactionOperation;
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param int $id
@@ -141,6 +154,118 @@ class TransactionsController extends Controller
     public function edit($id)
     {
         //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function transferMoney()
+    {
+        return view('transactions.transfer');
+    }
+
+    public function createTransfer(Request $request)
+    {
+        DB::beginTransaction();
+        try
+        {
+            $fromAccountId       = $request->input('from');
+            $transferOperations  = $request->input('transferOperation');
+
+            $userId  = auth()->user()->id;
+            $user    = User::find($userId);
+            $account = Account::find($fromAccountId);
+
+            // create new transaction
+            $transaction          = new Transaction();
+            $transaction->user_id = $userId;
+            $transaction->save();
+
+            //.. check if from account is valid and belongs to the current user
+            $isValid = $this->isValidAccount($fromAccountId);
+            if(!$isValid)
+            {
+                throw new Exception('Account Does Not Exists');
+            }
+
+            // calculate total transfer amount
+            $totalAmount = $this->calculateTransferTotalAmount($transferOperations);
+
+            // make withdraw with total transfer amount
+            // throw error if user account balance is not enough
+            $account->withdraw(floatval($totalAmount));
+            $account->save();
+
+            foreach($transferOperations as $transferOperation)
+            {
+                $transactionOperation = $this->createTransactionOperation(
+                    $account,
+                    '3', //Needs Optimization
+                    $totalAmount,
+                    $transaction
+                );
+                $transactionOperation->save();
+                $this->handleTransferOperation($transferOperation, $account);
+            }
+            DB::commit();
+        }
+        catch(Exception $exception)
+        {
+            DB::rollBack();
+            throw $exception;
+        }
+        return redirect('/transactions');
+    }
+
+    public function handleTransferOperation($transfer, $currentAccount)
+    {
+        $currentAccountCurrency = $currentAccount->currency->currency_type;
+        $targetAccountId        = $transfer['target'];
+        $targetAccount          = Account::find($targetAccountId);
+        $targetAccountCurrency  = $targetAccount->currency->currency_type;
+        $amount                 = $transfer['amount'];
+
+        //... use curl to make http request to perform currency conversion
+        $targetAccount->deposit(floatval($amount));
+        $targetAccount->save();
+    }
+
+    /**
+     * @param $transferOperations
+     * @return int|mixed
+     */
+    public function calculateTransferTotalAmount($transferOperations)
+    {
+        $totalAmount = 0;
+        foreach($transferOperations as $transferOperation)
+        {
+            $totalAmount += floatval($transferOperation['amount']);
+        }
+        return $totalAmount;
+    }
+
+
+    /**
+     * check if account belongs to the user
+     * @param $accountId
+     * @return bool
+     */
+    public function isValidAccount($accountId)
+    {
+        $userId = auth()->user()->id;
+        $user   = User::find($userId);
+        $userAccounts = $user->accounts;
+        foreach($userAccounts as $userAccount)
+        {
+            if($userAccount->id == $accountId)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
