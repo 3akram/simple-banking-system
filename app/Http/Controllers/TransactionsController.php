@@ -6,16 +6,17 @@ use App\Models\Account;
 use App\Models\TransactionType;
 use App\Models\User;
 use Exception;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\TransactionOperation;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 
 class TransactionsController extends Controller
 {
-    const WITHDRAW = 'withdraw';
-    const DEPOSIT  = 'deposit';
-    const TRANSFER = 'transfer';
+
     /**
      * Create a new controller instance.
      *
@@ -29,7 +30,7 @@ class TransactionsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function index()
     {
@@ -40,22 +41,22 @@ class TransactionsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function create()
     {
-        $userId           = auth()->user()->id;
-        $user             = User::find($userId);
-        $transactionTypes = TransactionType::all();
-        $data             = array('accounts'=>$user->accounts, 'transactionTypes'=>$transactionTypes);
+        $userId = auth()->user()->id;
+        $user = User::find($userId);
+        $transactionTypes = TransactionType::offset(0)->limit(2)->get();
+        $data = array('accounts' => $user->accounts, 'transactionTypes' => $transactionTypes);
         return view('transactions.create')->with($data);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Routing\Redirector
+     * @param Request $request
+     * @return Redirector
      * @throws Exception
      */
     public function store(Request $request)
@@ -64,24 +65,24 @@ class TransactionsController extends Controller
         // create new transaction
 
         DB::beginTransaction();
-        try{
+        try {
             $transaction = new Transaction();
             $transaction->user_id = auth()->user()->id;
 
             // save transaction
             $transaction->save();
-            // start timer run update to the transaction after 24 hours flip permanent flag (important)
 
-            foreach($transactionOperations as $operation) {
-                $accountId                                 = $operation['accountId'];
-                $accountTypeId                             = $operation['transactionTypeId'];
+            // start timer run update to the transaction after 24 hours flip permanent flag (important)
+            foreach ($transactionOperations as $operation) {
+                $accountId     = $operation['accountId'];
+                $accountTypeId = $operation['transactionTypeId'];
 
                 // create new transaction operation
-                $transactionOperation                      = new TransactionOperation();
-                $transactionOperation->account_id          = $accountId;
-                $transactionOperation->transaction_type_id = $accountTypeId;
-                $transactionOperation->amount              = floatval($operation['amount']);
-                $transactionOperation->transaction_id      = $transaction->id;
+                $transactionOperation                       = new TransactionOperation();
+                $transactionOperation->account_id           = $accountId;
+                $transactionOperation->transaction_type_id  = $accountTypeId;
+                $transactionOperation->amount               = floatval($operation['amount']);
+                $transactionOperation->transaction_id       = $transaction->id;
 
                 // save transaction operation
                 $transactionOperation->save();
@@ -89,19 +90,8 @@ class TransactionsController extends Controller
                 // update balance
                 $account = Account::find($accountId);
 
-                // withdraw case
-                if($transactionOperation->transactionType->transaction_type == self::WITHDRAW){
-                    // check if the balance >= amount if so take amount from balance
-                    if($account->balance >= $transactionOperation->amount){
-                        $account->balance = $account->balance - $transactionOperation->amount;
-                    } else {
-                        throw new Exception('Operation Field!');
-                    }
+                $this->handleTransactionOperation($transactionOperation, $account);
 
-                } else if ($transactionOperation->transactionType->transaction_type == self::DEPOSIT) {
-                    // Add amount to the balance
-                    $account->balance = $account->balance + $transactionOperation->amount;
-                }
                 $account->save();
             }
             // if the code run with no errors
@@ -114,10 +104,28 @@ class TransactionsController extends Controller
     }
 
     /**
+     * @param TransactionOperation $transactionOperation
+     * @param Account $account
+     */
+    function handleTransactionOperation(TransactionOperation $transactionOperation, Account &$account)
+    {
+        switch ($transactionOperation->transactionType->transaction_type) {
+            case TransactionType::WITHDRAW:
+                $account->withdraw($transactionOperation->amount);
+                break;
+            case TransactionType::DEPOSIT:
+                $account->deposit($transactionOperation->amount);
+                break;
+            default:
+                throw new HttpException(400, 'Unrecognized transaction type');
+        }
+    }
+
+    /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
     public function show($id)
     {
@@ -127,8 +135,8 @@ class TransactionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
     public function edit($id)
     {
@@ -138,9 +146,9 @@ class TransactionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -150,8 +158,8 @@ class TransactionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
     public function destroy($id)
     {
